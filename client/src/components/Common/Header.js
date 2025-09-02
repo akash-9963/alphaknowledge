@@ -91,20 +91,20 @@ const Header = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 lg:h-20">
             
-            {/* **UPDATED**: Logo + Name Always Visible with Responsive Sizing */}
+            {/* **UPDATED**: Larger Logo + Text Sizes */}
             <div 
-              className="flex items-center cursor-pointer space-x-2 group"
+              className="flex items-center cursor-pointer space-x-3 group"
               onClick={() => handleNavigation('/')}
             >
-              {/* Logo Image: Always visible with responsive sizes */}
+              {/* Logo Image: Increased base size for small screens */}
               <img
                 src="/alphalogo.png"
                 alt="AlphaKnowledge Logo"
-                className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 object-contain"
+                className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 object-contain"
               />
 
-              {/* Logo Text: Always visible with responsive font sizes */}
-              <h1 className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl font-bold bg-gradient-to-r from-[#6366f1] to-[#a855f7] bg-clip-text text-transparent group-hover:from-[#5855eb] group-hover:to-[#9333ea] transition-all">
+              {/* Logo Text: Increased base font size (+2px equivalent) */}
+              <h1 className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold bg-gradient-to-r from-[#6366f1] to-[#a855f7] bg-clip-text text-transparent group-hover:from-[#5855eb] group-hover:to-[#9333ea] transition-all">
                 AlphaKnowledge
               </h1>
             </div>
@@ -219,7 +219,7 @@ const Header = () => {
           </div>
         </div>
 
-        {/* Mobile Navigation Overlay */}
+        {/* Mobile Navigation Overlay - Same as before */}
         {isMobileMenuOpen && (
           <>
             <div 
