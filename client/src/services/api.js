@@ -9,7 +9,15 @@ const api = axios.create({
 });
 
 export const authAPI = {
-  getCurrentUser: () => api.get('/auth/user'),
+  getCurrentUser: async () => {
+    try {
+      const response = await api.get('/auth/user');
+      return response.data;
+    } catch (error) {
+      // Suppress the error (e.g., 401) and return null
+      return null;
+    }
+  },
   logout: () => api.post('/auth/logout'),
   
   // NEW: Verify Google JWT token
@@ -23,3 +31,4 @@ export const progressAPI = {
 };
 
 export default api;
+
