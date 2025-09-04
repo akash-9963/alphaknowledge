@@ -16,10 +16,11 @@ router.get('/user', authController.getCurrentUser);
 // NEW: Add token verification route for popup login
 router.post('/google/verify', authController.verifyGoogleToken);
 
-// Ping route to keep the server awake (used by cron job)
+// Ping route to keep the server awake 
 router.get('/ping', (req, res) => {
   res.status(200).send('Server is awake');
 });
 
 module.exports = router;
+
 
