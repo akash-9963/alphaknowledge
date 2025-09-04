@@ -22,6 +22,7 @@ const SheetView = lazy(() => import('./components/Content/SheetView'));
 const ContactUs = lazy(() => import('./components/Pages/ContactUs'));
 const MainLayout = lazy(() => import('./components/Layout/MainLayout'));
 const WelcomeScreen = lazy(() => import('./components/Pages/WelcomeScreen'));
+const Announcements = lazy(() => import('./components/Pages/Announcements'));
 
 // Loading component
 const PageLoader = () => (
@@ -59,6 +60,7 @@ function App() {
               <Suspense fallback={<PageLoader />}>
                 <Routes>
                   <Route path="/" element={<HomePage />} />
+                  <Route path="/announcements" element={<Announcements />} />
                   <Route path="/sheets" element={<SheetsPage />} />
                   <Route path="/sheet/:sheetId" element={<SheetDetailsPage />} />
                   <Route path="/contact" element={<ContactUsPage />} />
