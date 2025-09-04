@@ -41,7 +41,7 @@ import {
 const TYPING_SPEED = 100;
 const ERASING_SPEED = 50;
 const PAUSE_DURATION = 2000;
-const WORDS = ["Data Structure Enthusiast", "Algorithm Problem Solver", "Coding Excellence Seeker"];
+const WORDS = ["Precision over speed", "Structure defines success", "Practice beats talent"];
 
 // Updated shorter code snippets for compact display
 const CODE_SNIPPETS = [
@@ -276,21 +276,35 @@ const ProfileImage = memo(() => (
         <div className="absolute -inset-4 bg-gradient-to-l from-fuchsia-500 via-rose-500 to-pink-600 rounded-full blur-3xl animate-pulse opacity-40" />
       </div>
 
-      {/* Profile Container */}
-      <div className="relative w-64 h-64 sm:w-72 sm:h-72 rounded-full overflow-hidden shadow-2xl transform transition-all duration-700 group-hover:scale-105 z-10">
-        {/* Optional glowing border */}
-        <div className="absolute inset-0 border-4 border-white/20 dark:border-white/20 rounded-full z-10 transition-all duration-700 group-hover:border-white/40 group-hover:scale-105" />
+      {/* Profile Container with Tagline */}
+      <div className="flex flex-col items-center">
+        {/* Profile Image */}
+        <div className="relative w-64 h-64 sm:w-72 sm:h-72 rounded-full overflow-hidden shadow-2xl transform transition-all duration-700 group-hover:scale-105 z-10">
+          {/* Optional glowing border */}
+          <div className="absolute inset-0 border-4 border-white/20 dark:border-white/20 rounded-full z-10 transition-all duration-700 group-hover:border-white/40 group-hover:scale-105" />
+          
+          {/* ✅ Profile Image */}
+          <img
+            src="/alphaprofile.png"
+            alt="Profile"
+            className="w-full h-full object-cover object-center rounded-full"
+          />
+        </div>
 
-        {/* ✅ Profile Image */}
-        <img
-          src="/alphaprofile.png"
-          alt="Profile"
-          className="w-full h-full object-cover object-center rounded-full"
-        />
+        {/* ✅ Code | Compete | Conquer Tagline - Increased size and spacing */}
+        <div 
+          className="mt-6 text-center text-base md:text-lg font-light tracking-wide text-slate-700 dark:text-slate-300 transition-colors duration-300"
+          data-aos="fade-up" 
+          data-aos-delay="300"
+        >
+          Code | Compete | Conquer
+        </div>
       </div>
     </div>
   </div>
 ));
+
+
 
 const StatCard = memo(({ icon: Icon, color, value, label, description, animation }) => (
   <div data-aos={animation} data-aos-duration="1300" className="relative group">
