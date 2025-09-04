@@ -13,7 +13,8 @@ import {
   Mail,
   User,
   Loader2,
-  LogOut
+  LogOut,
+  Bell
 } from 'lucide-react';
 
 const Header = () => {
@@ -24,12 +25,51 @@ const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
 
   const navigationItems = [
     { path: '/', label: 'Home', icon: Home },
     { path: '/sheets', label: 'Sheets', icon: List },
+    { path: '/announcements', label: 'Announcements', icon: Bell },
     { path: '/contact', label: 'Contact', icon: Mail }
   ];
+
+  // Check for unread announcements
+  useEffect(() => {
+    const checkUnreadAnnouncements = async () => {
+      try {
+        const response = await fetch('/announcements.json');
+        if (!response.ok) return;
+        
+        const data = await response.json();
+        
+        // Get seen announcement IDs from localStorage
+        const seenIds = JSON.parse(localStorage.getItem('seenAnnouncements') || '[]');
+        
+        // Count unseen announcements
+        const unreadAnnouncements = data.announcements.filter(
+          announcement => !seenIds.includes(announcement.id)
+        );
+        
+        setUnreadCount(unreadAnnouncements.length);
+      } catch (error) {
+        console.error('Error checking announcements:', error);
+      }
+    };
+
+    checkUnreadAnnouncements();
+    
+    // Check every 5 minutes for new announcements
+    const interval = setInterval(checkUnreadAnnouncements, 5 * 60 * 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Reset unread count when user visits announcements page
+  useEffect(() => {
+    if (location.pathname === '/announcements') {
+      setUnreadCount(0);
+    }
+  }, [location.pathname]);
 
   // Handle scroll effect
   useEffect(() => {
@@ -91,19 +131,16 @@ const Header = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 lg:h-20">
             
-            {/* **UPDATED**: Larger Logo + Text Sizes */}
+            {/* Logo */}
             <div 
               className="flex items-center cursor-pointer space-x-3 group"
               onClick={() => handleNavigation('/')}
             >
-              {/* Logo Image: Increased base size for small screens */}
               <img
                 src="/alphalogo.png"
                 alt="AlphaKnowledge Logo"
                 className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 object-contain"
               />
-
-              {/* Logo Text: Increased base font size (+2px equivalent) */}
               <h1 className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold bg-gradient-to-r from-[#6366f1] to-[#a855f7] bg-clip-text text-transparent group-hover:from-[#5855eb] group-hover:to-[#9333ea] transition-all">
                 AlphaKnowledge
               </h1>
@@ -115,6 +152,8 @@ const Header = () => {
                 {navigationItems.map((item) => {
                   const Icon = item.icon;
                   const isActive = location.pathname === item.path;
+                  const isAnnouncements = item.path === '/announcements';
+                  
                   return (
                     <li key={item.path}>
                       <button
@@ -126,7 +165,15 @@ const Header = () => {
                         }`}
                       >
                         <span className="relative flex items-center gap-1">
-                          <Icon className="w-4 h-4 m-0 p-0" />
+                          <div className="relative">
+                            <Icon className="w-4 h-4 m-0 p-0" />
+                            {/* Notification Badge for Announcements */}
+                            {isAnnouncements && unreadCount > 0 && (
+                              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center animate-pulse">
+                                {unreadCount > 9 ? '9+' : unreadCount}
+                              </span>
+                            )}
+                          </div>
                           <span>{item.label}</span>
 
                           <span
@@ -145,7 +192,7 @@ const Header = () => {
             {/* Right Section */}
             <div className="flex items-center space-x-3">
               
-              {/* Simple Theme Toggle */}
+              {/* Theme Toggle */}
               <button 
                 className="p-2.5 text-[#6366f1] dark:text-[#a855f7] transition-all duration-200 transform hover:scale-110"
                 onClick={toggleTheme}
@@ -219,7 +266,7 @@ const Header = () => {
           </div>
         </div>
 
-        {/* Mobile Navigation Overlay - Same as before */}
+        {/* Mobile Navigation Overlay */}
         {isMobileMenuOpen && (
           <>
             <div 
@@ -235,6 +282,8 @@ const Header = () => {
                     {navigationItems.map((item, index) => {
                       const Icon = item.icon;
                       const isActive = location.pathname === item.path;
+                      const isAnnouncements = item.path === '/announcements';
+                      
                       return (
                         <li key={item.path}>
                           <button
@@ -248,7 +297,15 @@ const Header = () => {
                               transitionDelay: `${index * 50}ms`,
                             }}
                           >
-                            <Icon className={`w-5 h-5 ${isActive ? 'text-[#6366f1] dark:text-[#a855f7]' : ''}`} />
+                            <div className="relative">
+                              <Icon className={`w-5 h-5 ${isActive ? 'text-[#6366f1] dark:text-[#a855f7]' : ''}`} />
+                              {/* Mobile Notification Badge */}
+                              {isAnnouncements && unreadCount > 0 && (
+                                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                                  {unreadCount > 9 ? '9+' : unreadCount}
+                                </span>
+                              )}
+                            </div>
                             <span>{item.label}</span>
                           </button>
                         </li>
