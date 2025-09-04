@@ -123,17 +123,19 @@ const Header = () => {
     <>
       <header 
         className={`fixed w-full top-0 z-50 transition-all duration-500 ${
-          scrolled || isMobileMenuOpen
+          scrolled 
             ? 'bg-white/95 dark:bg-[#030014]/95 backdrop-blur-xl shadow-lg' 
+            : isMobileMenuOpen
+            ? 'bg-white dark:bg-[#030014] shadow-lg'  // ✅ Fixed: Solid background when mobile menu is open
             : 'bg-transparent'
         } border-b border-gray-200/50 dark:border-gray-800/50`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 lg:h-20">
             
-            {/* Logo */}
+            {/* Logo - Added explicit z-index to ensure it stays on top */}
             <div 
-              className="flex items-center cursor-pointer space-x-3 group"
+              className="flex items-center cursor-pointer space-x-3 group relative z-60"
               onClick={() => handleNavigation('/')}
             >
               <img
@@ -189,8 +191,8 @@ const Header = () => {
               </ul>
             </nav>
 
-            {/* Right Section */}
-            <div className="flex items-center space-x-3">
+            {/* Right Section - Added explicit z-index */}
+            <div className="flex items-center space-x-3 relative z-60">
               
               {/* Theme Toggle */}
               <button 
@@ -269,8 +271,10 @@ const Header = () => {
         {/* Mobile Navigation Overlay */}
         {isMobileMenuOpen && (
           <>
+            {/* Background Overlay - Only applies to the menu area, not header */}
             <div 
               className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 md:hidden"
+              style={{ top: '64px' }} // ✅ Start below the header
               onClick={() => setIsMobileMenuOpen(false)}
             />
             <div className="absolute top-full left-0 right-0 bg-white dark:bg-[#030014] shadow-2xl border-t border-gray-200 dark:border-gray-800 z-50 md:hidden">
